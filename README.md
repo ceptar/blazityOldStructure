@@ -78,16 +78,6 @@ Contributions are always welcome! To contribute, please follow these steps:
 4. Push your changes to the forked repository.
 5. Create a pull request, and we'll review your changes.
 
-## Support
-
-If you're looking for help or simply want to share your thoughts about the project, we encourage you to join our Discord community. Here's the link: [https://blazity.com/discord](https://blazity.com/discord). It's a space where we exchange ideas and help one another. Everyone's input is appreciated, and we look forward to welcoming you.
-
-<br />
-<a href="https://discord.gg/fyWtyNKmfX" style="width: 100%; display: flex; justify-content: center;">
-  <img src="https://discordapp.com/api/guilds/1111676875782234175/widget.png?style=banner2" alt="Blazity Discord Banner"/>
-</a>
-<br />
-
 ## 📜 License
 
 This project is licensed under the MIT License. For more information, see the [LICENSE](./LICENSE) file.
