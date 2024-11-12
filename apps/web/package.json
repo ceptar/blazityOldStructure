@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env FORCE_COLOR=1 next dev",
+    "dev": "cross-env FORCE_COLOR=1 next dev -p 8000",
     "build": "next build",
     "start": "next start",
     "lint": "cross-env FORCE_COLOR=1 next lint",

@@ -1,27 +1,29 @@
-import "./globals.css"
+import "./globals.css";
 
-import nextDynamic from "next/dynamic"
-import Script from "next/script"
-import { Suspense } from "react"
-import { Toaster } from "sonner"
-import { CallToAction } from "components/CallToAction/CallToAction"
-import { Footer } from "components/Footer/Footer"
-import { Modals } from "components/Modals/Modals"
-import { mobileInlineScript } from "components/NavigationBar/mobileInlineScript"
-import { NavigationBar } from "components/NavigationBar/NavigationBar"
-import { NavItem } from "components/NavigationBar/types"
-import { TopBar } from "components/TopBar/TopBar"
-import { FlagValues } from "views/FlagValues"
-import { ThirdParties } from "views/ThirdParties"
-import { env } from "env.mjs"
-import { Metadata } from "next"
-import { GithubBadge } from "views/GithubBadge"
-import { DemoModeAlert } from "views/DemoModeAlert"
-import { CartView } from "views/Cart/CartView"
+import nextDynamic from "next/dynamic";
+import Script from "next/script";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
+import { CallToAction } from "components/CallToAction/CallToAction";
+import { Footer } from "components/Footer/Footer";
+import { Modals } from "components/Modals/Modals";
+import { mobileInlineScript } from "components/NavigationBar/mobileInlineScript";
+import { NavigationBar } from "components/NavigationBar/NavigationBar";
+import { NavItem } from "components/NavigationBar/types";
+import { TopBar } from "components/TopBar/TopBar";
+import { FlagValues } from "views/FlagValues";
+import { ThirdParties } from "views/ThirdParties";
+import { env } from "env.mjs";
+import { Metadata } from "next";
+import { GithubBadge } from "views/GithubBadge";
+// import { DemoModeAlert } from "views/DemoModeAlert"
+import { CartView } from "views/Cart/CartView";
 
-const DraftToolbar = nextDynamic(() => import("views/DraftToolbar"), { ssr: false })
+const DraftToolbar = nextDynamic(() => import("views/DraftToolbar"), {
+  ssr: false,
+});
 
-export const revalidate = 3600
+export const revalidate = 3600;
 
 const navigationItems: NavItem[] = [
   {
@@ -36,7 +38,10 @@ const navigationItems: NavItem[] = [
           items: [
             { text: "Shirts & Blouses", href: "/category/shirts-and-blouses" },
             { text: "Blazers & Vests", href: "/category/blazers-and-vests" },
-            { text: "Cardigans & Sweaters", href: "/category/cardigans-and-sweaters" },
+            {
+              text: "Cardigans & Sweaters",
+              href: "/category/cardigans-and-sweaters",
+            },
             { text: "Dresses", href: "/category/dresses" },
             { text: "Skirts", href: "/category/skirts" },
           ],
@@ -46,7 +51,10 @@ const navigationItems: NavItem[] = [
           href: "/category/men",
           items: [
             { text: "T-shirts & Tanks", href: "/category/t-shirts-and-tanks" },
-            { text: "Hoodies & Sweatshirts", href: "/category/hoodies-and-sweatshirts" },
+            {
+              text: "Hoodies & Sweatshirts",
+              href: "/category/hoodies-and-sweatshirts",
+            },
             { text: "Blazers & Suits", href: "/category/blazers-and-suits" },
             { text: "Shorts", href: "/category/shorts" },
             { text: "Outerwear", href: "/category/outerwear" },
@@ -139,7 +147,10 @@ const navigationItems: NavItem[] = [
           items: [
             { text: "Cleansers", href: "/category/cleansers" },
             { text: "Moisturizers", href: "/category/moisturizers" },
-            { text: "Treatments & Serums", href: "/category/treatments-and-serums" },
+            {
+              text: "Treatments & Serums",
+              href: "/category/treatments-and-serums",
+            },
           ],
         },
         {
@@ -155,7 +166,10 @@ const navigationItems: NavItem[] = [
           text: "Haircare",
           href: "/category/haircare",
           items: [
-            { text: "Shampoos & Conditioners", href: "/category/shampoos-and-conditioners" },
+            {
+              text: "Shampoos & Conditioners",
+              href: "/category/shampoos-and-conditioners",
+            },
             { text: "Styling Products", href: "/category/styling-products" },
           ],
         },
@@ -181,7 +195,10 @@ const navigationItems: NavItem[] = [
           text: "Living Room",
           href: "/category/living-room-furniture",
           items: [
-            { text: "Sofas & Sectionals", href: "/category/sofas-and-sectionals" },
+            {
+              text: "Sofas & Sectionals",
+              href: "/category/sofas-and-sectionals",
+            },
             { text: "Coffee Tables", href: "/category/coffee-tables" },
             { text: "TV Stands", href: "/category/tv-stands" },
           ],
@@ -209,7 +226,7 @@ const navigationItems: NavItem[] = [
       ],
     },
   },
-]
+];
 
 export const metadata: Metadata = {
   title: "Next.js Enterprise Commerce | Blazity",
@@ -234,13 +251,20 @@ export const metadata: Metadata = {
   },
   generator: "Next.js",
   applicationName: "Next.js",
-}
+};
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
-        <Script id="mobileMegaMenuLogic" strategy="lazyOnload">{`${mobileInlineScript}`}</Script>
+        <Script
+          id="mobileMegaMenuLogic"
+          strategy="lazyOnload"
+        >{`${mobileInlineScript}`}</Script>
 
         <TopBar />
         <NavigationBar items={navigationItems} />
@@ -266,8 +290,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Suspense>
 
         <GithubBadge />
-        <DemoModeAlert />
+        {/* <DemoModeAlert /> */}
       </body>
     </html>
-  )
+  );
 }
