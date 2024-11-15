@@ -11,8 +11,7 @@
   "tasks": {
     "build": {
       "name": "build",
-      "command": "yarn build",
-      "runAtStart": false
+      "command": "yarn build"
     },
     "dev": {
       "name": "dev",
@@ -21,28 +20,23 @@
     },
     "lint": {
       "name": "lint",
-      "command": "yarn lint",
-      "runAtStart": false
+      "command": "yarn lint"
     },
     "test": {
       "name": "test",
-      "command": "yarn test",
-      "runAtStart": false
+      "command": "yarn test"
     },
     "e2e": {
       "name": "e2e",
-      "command": "yarn e2e",
-      "runAtStart": false
+      "command": "yarn e2e"
     },
     "format": {
       "name": "format",
-      "command": "yarn format",
-      "runAtStart": false
+      "command": "yarn format"
     },
     "commitlint": {
       "name": "commitlint",
-      "command": "yarn commitlint",
-      "runAtStart": false
+      "command": "yarn commitlint"
     }
   }
 }

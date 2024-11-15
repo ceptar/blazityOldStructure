@@ -5,6 +5,7 @@
     "composite": false,
     "declaration": true,
     "declarationMap": true,
+    "jsx": "preserve",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
@@ -21,4 +22,5 @@
     "strictNullChecks": true
   },
   "exclude": ["node_modules"]
+
 }

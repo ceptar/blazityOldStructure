@@ -9,6 +9,11 @@
   "files": [
     "dist/**"
   ],
+  "paths": {
+    "@/hooks/*": ["./platform/saleor/hooks/*"],
+    "@/ui/*": ["./platform/saleor/ui/*"]
+  },
+
   "scripts": {
     "prebuild": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "build": "cross-env FORCE_COLOR=1 tsup **/*.ts --format esm,cjs --dts --external react",
@@ -16,7 +21,9 @@
     "lint": "cross-env FORCE_COLOR=1 eslint .",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
-    "codegen": "graphql-codegen && graphql-codegen -p admin"
+    "codegen": "graphql-codegen && graphql-codegen -p admin",
+
+    "generate": "graphql-codegen --config .graphqlrc.ts"
   },
   "dependencies": {
     "@shopify/admin-api-client": "0.2.3",

@@ -19,7 +19,7 @@ import { NavigationItem } from "./NavigationItem"
 const ProductAddedAlert = dynamic(() => import("views/Product/ProductAddedAlert").then((mod) => mod.ProductAddedAlert))
 
 interface NavigationBarProps {
-  items: NavItem[]
+  items: NavItem[],
 }
 
 function VariantGrid({ variant, items }: { variant?: "text-grid" | "image-grid" | "text-image-grid"; items?: TextGridItem[] | ImageGridItem[] | TextImageGridItem[] }) {
