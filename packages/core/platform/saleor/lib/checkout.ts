@@ -1,4 +1,3 @@
-"Use Server";
 import { cookies } from "next/headers";
 import {
   CheckoutCreateDocument,
