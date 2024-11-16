@@ -1,129 +1,155 @@
 import { compact } from "lodash-es";
 import { useCallback, useEffect, useRef } from "react";
-import { type OptionalAddress } from "@/checkout/components/AddressForm/types";
-import { getByMatchingAddress, isMatchingAddress } from "@/checkout/components/AddressForm/utils";
-import { type AddressFragment } from "@/checkout/graphql";
-import { useAddressAvailability } from "@/checkout/hooks/useAddressAvailability";
-import { useDebouncedSubmit } from "@/checkout/hooks/useDebouncedSubmit";
-import { useForm } from "@/checkout/hooks/useForm";
-import { type FormSubmitFn } from "@/checkout/hooks/useFormSubmit";
-import { useUser } from "@/checkout/hooks/useUser";
-import { getById, getByUnmatchingId } from "@/checkout/lib/utils/common";
+import { type OptionalAddress } from "@enterprise-commerce/core/platform/saleor/checkout/components/AddressForm/types";
+import {
+  getByMatchingAddress,
+  isMatchingAddress,
+} from "@enterprise-commerce/core/platform/saleor/checkout/components/AddressForm/utils";
+import { type AddressFragment } from "@enterprise-commerce/core/platform/saleor/checkout/graphql";
+import { useAddressAvailability } from "@enterprise-commerce/core/platform/saleor/checkout/hooks/useAddressAvailability";
+import { useDebouncedSubmit } from "@enterprise-commerce/core/platform/saleor/checkout/hooks/useDebouncedSubmit";
+import { useForm } from "@enterprise-commerce/core/platform/saleor/checkout/hooks/useForm";
+import { type FormSubmitFn } from "@enterprise-commerce/core/platform/saleor/checkout/hooks/useFormSubmit";
+import { useUser } from "@enterprise-commerce/core/platform/saleor/checkout/hooks/useUser";
+import {
+  getById,
+  getByUnmatchingId,
+} from "@enterprise-commerce/core/platform/saleor/checkout/lib/utils/common";
 
 export interface AddressListFormData {
-	selectedAddressId: string | undefined;
-	addressList: AddressFragment[];
+  selectedAddressId: string | undefined;
+  addressList: AddressFragment[];
 }
 
 interface UseAddressListProps {
-	onSubmit: FormSubmitFn<AddressListFormData>;
-	checkoutAddress: OptionalAddress;
-	defaultAddress: OptionalAddress;
-	checkAddressAvailability?: boolean;
+  onSubmit: FormSubmitFn<AddressListFormData>;
+  checkoutAddress: OptionalAddress;
+  defaultAddress: OptionalAddress;
+  checkAddressAvailability?: boolean;
 }
 
 export const useAddressListForm = ({
-	onSubmit,
-	checkoutAddress,
-	defaultAddress,
-	checkAddressAvailability = false,
+  onSubmit,
+  checkoutAddress,
+  defaultAddress,
+  checkAddressAvailability = false,
 }: UseAddressListProps) => {
-	const { user } = useUser();
+  const { user } = useUser();
 
-	const { isAvailable } = useAddressAvailability(!checkAddressAvailability);
+  const { isAvailable } = useAddressAvailability(!checkAddressAvailability);
 
-	// sdk has outdated types
-	const addresses = (user?.addresses || []) as AddressFragment[];
+  // sdk has outdated types
+  const addresses = (user?.addresses || []) as AddressFragment[];
 
-	const previousCheckoutAddress = useRef<OptionalAddress>(null);
+  const previousCheckoutAddress = useRef<OptionalAddress>(null);
 
-	const form = useForm<AddressListFormData>({
-		initialDirty: true,
-		initialValues: {
-			addressList: addresses,
-			selectedAddressId: addresses.find(getByMatchingAddress(checkoutAddress))?.id,
-		},
-		onSubmit,
-	});
+  const form = useForm<AddressListFormData>({
+    initialDirty: true,
+    initialValues: {
+      addressList: addresses,
+      selectedAddressId: addresses.find(getByMatchingAddress(checkoutAddress))
+        ?.id,
+    },
+    onSubmit,
+  });
 
-	const { values, setValues, setFieldValue, handleSubmit } = form;
+  const { values, setValues, setFieldValue, handleSubmit } = form;
 
-	const debouncedSubmit = useDebouncedSubmit(handleSubmit);
+  const debouncedSubmit = useDebouncedSubmit(handleSubmit);
 
-	const { addressList, selectedAddressId } = values;
-	const selectedAddress = addressList.find(getById(selectedAddressId));
+  const { addressList, selectedAddressId } = values;
+  const selectedAddress = addressList.find(getById(selectedAddressId));
 
-	useEffect(() => {
-		debouncedSubmit();
-	}, [debouncedSubmit, selectedAddressId]);
+  useEffect(() => {
+    debouncedSubmit();
+  }, [debouncedSubmit, selectedAddressId]);
 
-	const addressListUpdate = async (selectedAddress: OptionalAddress, addressList: AddressFragment[]) => {
-		if (!selectedAddress) {
-			return;
-		}
+  const addressListUpdate = async (
+    selectedAddress: OptionalAddress,
+    addressList: AddressFragment[]
+  ) => {
+    if (!selectedAddress) {
+      return;
+    }
 
-		setValues({
-			addressList,
-			selectedAddressId: selectedAddress.id,
-		});
+    setValues({
+      addressList,
+      selectedAddressId: selectedAddress.id,
+    });
 
-		handleSubmit();
-	};
+    handleSubmit();
+  };
 
-	const onAddressCreateSuccess = async (address: OptionalAddress) =>
-		addressListUpdate(address, compact([...addressList, address]));
+  const onAddressCreateSuccess = async (address: OptionalAddress) =>
+    addressListUpdate(address, compact([...addressList, address]));
 
-	const onAddressUpdateSuccess = async (address: OptionalAddress) =>
-		addressListUpdate(
-			address,
-			addressList.map((existingAddress) => (existingAddress.id === address?.id ? address : existingAddress)),
-		);
+  const onAddressUpdateSuccess = async (address: OptionalAddress) =>
+    addressListUpdate(
+      address,
+      addressList.map((existingAddress) =>
+        existingAddress.id === address?.id ? address : existingAddress
+      )
+    );
 
-	const onAddressDeleteSuccess = (id: string) =>
-		addressListUpdate(addressList[0], addressList.filter(getByUnmatchingId(id)));
+  const onAddressDeleteSuccess = (id: string) =>
+    addressListUpdate(
+      addressList[0],
+      addressList.filter(getByUnmatchingId(id))
+    );
 
-	const handleDefaultAddressSet = useCallback(async () => {
-		const isSelectedAddressSameAsCheckout =
-			!!selectedAddress && isMatchingAddress(checkoutAddress, selectedAddress);
+  const handleDefaultAddressSet = useCallback(async () => {
+    const isSelectedAddressSameAsCheckout =
+      !!selectedAddress && isMatchingAddress(checkoutAddress, selectedAddress);
 
-		const hasCheckoutAddressChanged = !isMatchingAddress(checkoutAddress, previousCheckoutAddress.current);
+    const hasCheckoutAddressChanged = !isMatchingAddress(
+      checkoutAddress,
+      previousCheckoutAddress.current
+    );
 
-		// currently selected address is the same as checkout or
-		// address hasn't changed at all -> do nothing
-		if (isSelectedAddressSameAsCheckout || (checkoutAddress && !hasCheckoutAddressChanged)) {
-			return;
-		}
+    // currently selected address is the same as checkout or
+    // address hasn't changed at all -> do nothing
+    if (
+      isSelectedAddressSameAsCheckout ||
+      (checkoutAddress && !hasCheckoutAddressChanged)
+    ) {
+      return;
+    }
 
-		const matchingDefaultAddressInAddresses = addressList.find(getByMatchingAddress(defaultAddress));
-		// if not, prefer user default address
-		if (defaultAddress && matchingDefaultAddressInAddresses) {
-			previousCheckoutAddress.current = defaultAddress;
-			void setFieldValue("selectedAddressId", matchingDefaultAddressInAddresses.id);
-			return;
-		}
+    const matchingDefaultAddressInAddresses = addressList.find(
+      getByMatchingAddress(defaultAddress)
+    );
+    // if not, prefer user default address
+    if (defaultAddress && matchingDefaultAddressInAddresses) {
+      previousCheckoutAddress.current = defaultAddress;
+      void setFieldValue(
+        "selectedAddressId",
+        matchingDefaultAddressInAddresses.id
+      );
+      return;
+    }
 
-		const firstAvailableAddress = addressList.find(isAvailable);
+    const firstAvailableAddress = addressList.find(isAvailable);
 
-		// otherwise just choose any available
-		if (firstAvailableAddress) {
-			previousCheckoutAddress.current = firstAvailableAddress;
-			void setFieldValue("selectedAddressId", firstAvailableAddress.id);
-		}
+    // otherwise just choose any available
+    if (firstAvailableAddress) {
+      previousCheckoutAddress.current = firstAvailableAddress;
+      void setFieldValue("selectedAddressId", firstAvailableAddress.id);
+    }
 
-		// otherwise it gets way overcomplicated to get this to run only when needed
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [defaultAddress?.id, checkoutAddress?.id]);
+    // otherwise it gets way overcomplicated to get this to run only when needed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultAddress?.id, checkoutAddress?.id]);
 
-	useEffect(() => {
-		void handleDefaultAddressSet();
-	}, [handleDefaultAddressSet]);
+  useEffect(() => {
+    void handleDefaultAddressSet();
+  }, [handleDefaultAddressSet]);
 
-	return {
-		form,
-		userAddressActions: {
-			onAddressCreateSuccess,
-			onAddressUpdateSuccess,
-			onAddressDeleteSuccess,
-		},
-	};
+  return {
+    form,
+    userAddressActions: {
+      onAddressCreateSuccess,
+      onAddressUpdateSuccess,
+      onAddressDeleteSuccess,
+    },
+  };
 };

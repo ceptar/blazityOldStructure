@@ -1,11 +1,11 @@
-import { useUserQuery } from "@/checkout/graphql";
+import { useUserQuery } from "@enterprise-commerce/core/platform/saleor/checkout/graphql";
 
 export const useUser = () => {
-	const [{ data, fetching: loading, stale }] = useUserQuery();
+  const [{ data, fetching: loading, stale }] = useUserQuery();
 
-	const user = data?.user;
+  const user = data?.user;
 
-	const authenticated = !!user?.id;
+  const authenticated = !!user?.id;
 
-	return { user, loading: loading || stale, authenticated };
+  return { user, loading: loading || stale, authenticated };
 };
