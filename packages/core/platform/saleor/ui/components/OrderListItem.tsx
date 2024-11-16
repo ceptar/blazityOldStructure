@@ -1,12 +1,16 @@
-import Image from "next/image"
-import { LinkWithChannel } from "../atoms/LinkWithChannel"
-import { formatDate, formatMoney, getHrefForVariant } from "@/lib/utils"
-import { type OrderDetailsFragment } from "@enterprise-commerce/core/platform/saleor/codegen/graphql"
-import { PaymentStatus } from "@/ui/components/PaymentStatus"
+import Image from "next/image";
+import { LinkWithChannel } from "../atoms/LinkWithChannel";
+import {
+  formatDate,
+  formatMoney,
+  getHrefForVariant,
+} from "@enterprise-commerce/core/platform/saleor/lib/utils";
+import { type OrderDetailsFragment } from "@enterprise-commerce/core/platform/saleor/codegen/graphql";
+import { PaymentStatus } from "@enterprise-commerce/core/platform/saleor/ui/components/PaymentStatus";
 
 type Props = {
-  order: OrderDetailsFragment
-}
+  order: OrderDetailsFragment;
+};
 
 export const OrderListItem = ({ order }: Props) => {
   return (
@@ -20,7 +24,9 @@ export const OrderListItem = ({ order }: Props) => {
           <div className="flex flex-row items-center justify-between py-4 md:flex-col md:items-start md:gap-y-1">
             <dt className="font-medium text-neutral-900">Date placed</dt>
             <dd className="text-neutral-600">
-              <time dateTime={order.created}>{formatDate(new Date(order.created))}</time>
+              <time dateTime={order.created}>
+                {formatDate(new Date(order.created))}
+              </time>
             </dd>
           </div>
           <div className="flex flex-row items-center justify-between py-4 md:flex-col md:items-start md:gap-y-1">
@@ -55,10 +61,10 @@ export const OrderListItem = ({ order }: Props) => {
               <tbody className="md:divide-y">
                 {order.lines.map((item) => {
                   if (!item.variant) {
-                    return null
+                    return null;
                   }
 
-                  const product = item.variant.product
+                  const product = item.variant.product;
 
                   return (
                     <tr key={product.id}>
@@ -85,35 +91,60 @@ export const OrderListItem = ({ order }: Props) => {
                             >
                               {product.name}
                             </LinkWithChannel>
-                            {item.variant.name !== item.variant.id && Boolean(item.variant.name) && <p className="mt-1">Variant: {item.variant.name}</p>}
+                            {item.variant.name !== item.variant.id &&
+                              Boolean(item.variant.name) && (
+                                <p className="mt-1">
+                                  Variant: {item.variant.name}
+                                </p>
+                              )}
                           </div>
                         </div>
                       </td>
                       <td className="py-6 pr-6 max-md:hidden">
-                        {item.quantity} × {item.variant.pricing?.price && formatMoney(item.variant.pricing.price.gross.amount, item.variant.pricing.price.gross.currency)}
+                        {item.quantity} ×{" "}
+                        {item.variant.pricing?.price &&
+                          formatMoney(
+                            item.variant.pricing.price.gross.amount,
+                            item.variant.pricing.price.gross.currency
+                          )}
                       </td>
                       <td className="py-6 text-end">
                         <div className="flex flex-col gap-1 text-neutral-900">
-                          {item.variant.pricing?.price && formatMoney(item.variant.pricing.price.gross.amount * item.quantity, item.variant.pricing.price.gross.currency)}
+                          {item.variant.pricing?.price &&
+                            formatMoney(
+                              item.variant.pricing.price.gross.amount *
+                                item.quantity,
+                              item.variant.pricing.price.gross.currency
+                            )}
                           {item.quantity > 1 && (
                             <span className="text-xs md:hidden">
-                              {item.quantity} × {item.variant.pricing?.price && formatMoney(item.variant.pricing.price.gross.amount, item.variant.pricing.price.gross.currency)}
+                              {item.quantity} ×{" "}
+                              {item.variant.pricing?.price &&
+                                formatMoney(
+                                  item.variant.pricing.price.gross.amount,
+                                  item.variant.pricing.price.gross.currency
+                                )}
                             </span>
                           )}
                         </div>
                       </td>
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>
           </div>
           <dl className="flex justify-between border-y py-6 text-sm font-medium text-neutral-900 md:border md:px-6">
             <dt>Total amount including delivery</dt>
-            <dd>{formatMoney(order.total.gross.amount, order.total.gross.currency)}</dd>
+            <dd>
+              {formatMoney(
+                order.total.gross.amount,
+                order.total.gross.currency
+              )}
+            </dd>
           </dl>
         </>
       )}
     </li>
-  )
-}
+  );
+};
