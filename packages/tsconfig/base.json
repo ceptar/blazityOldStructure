@@ -5,11 +5,11 @@
     "composite": false,
     "declaration": true,
     "declarationMap": true,
-    "jsx": "preserve",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    "jsx": "preserve",
     "inlineSources": false,
     "isolatedModules": true,
     "module": "ESNext",
@@ -22,5 +22,4 @@
     "strictNullChecks": true
   },
   "exclude": ["node_modules"]
-
 }

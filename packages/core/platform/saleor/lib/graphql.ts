@@ -1,6 +1,6 @@
 import { invariant } from "ts-invariant"
-import { type TypedDocumentString } from "../codegen/graphql"
-import { getServerAuthClient } from "../config"
+import { type TypedDocumentString } from "../generated/graphql"
+import { getServerAuthClient } from "@enterprise-commerce/web/app/config"
 
 type GraphQLErrorResponse = {
   errors: readonly {

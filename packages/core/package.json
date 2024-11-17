@@ -9,11 +9,6 @@
   "files": [
     "dist/**"
   ],
-  "paths": {
-    "@/hooks/*": ["./platform/saleor/hooks/*"],
-    "@/ui/*": ["./platform/saleor/ui/*"]
-  },
-
   "scripts": {
     "prebuild": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "build": "cross-env FORCE_COLOR=1 tsup **/*.ts --format esm,cjs --dts --external react",
